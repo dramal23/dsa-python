@@ -1,7 +1,7 @@
 class HashTable:
     def __init__(self, capacity):
         self.capacity = capacity
-        self.arr = [0] * capacity
+        self.arr = [[] for _ in range(capacity)]
 
     # remainder of ASCII value of the key string's 1st character divided by capacity
     def hash(self, key):
@@ -9,14 +9,20 @@ class HashTable:
 
     def get(self, key):
         hash_index = self.hash(key)
-        if self.arr[hash_index] is not None:
-            return self.arr[hash_index]
+        for kvp in self.arr[hash_index]:
+            if kvp[0] == key:
+                return kvp[1]
     
     def set(self, key, value):
         hash_index = self.hash(key)
-        self.arr[hash_index] = (key, value) 
+        for kvp in self.arr[hash_index]:
+            if kvp[0] == key:
+                kvp[1] = value
+                return
     
     def remove(self, key):
         hash_index = self.hash(key)
-        if self.table[hash_index] is not None:
-            self.table[hash_index] = None
+        for i, kvp in enumerate(self.arr[hash_index]):
+            if kvp[0] == key:
+                self.table[hash_index].pop(i)
+                return
